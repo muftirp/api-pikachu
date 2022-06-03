@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <button type="button" onclick="fetchData()">Fetch data</button>
+    <div id="progate">
+ 
+    </div>
+</body>
+<script>
+        async function fetchData() {
+        const response = await fetch("https://pokeapi.co/api/v2/pokemon?limit=10", {
+            method: "GET"
+        });
+
+        const json = await response.json();
+        const results = json.results;
+
+        let data = '';  //membuat variabel data untuk menampung string yang akan ditampilkan di #progate
+        for (let i = 0; i < results.length; i++) { //   mengulangi setiap item dari array results
+            data = data + `<p>${results[i].name}</p>`; //   menambahkan string yang akan ditampilkan di #progate
+        }
+
+         document.getElementById("progate").innerHTML = data; //menampilkan data ke dalam element dengan id "progate"
+}
+</script>
+</html>
