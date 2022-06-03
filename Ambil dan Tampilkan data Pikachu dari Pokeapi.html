@@ -1,48 +1,43 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
-    <title>AJAX Ambil Data Pikachu</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
 </head>
 <body>
-    <div class="container">
-        <!-- Content here -->
-        <h1>Ambil Pikachu</h1>
-
-        <button type="button" onclick="ambilData()" id="ambildata" class="btn btn-primary mb-2">Get</button>
-
-        <div class="row">
-            <div id="hasil">
-            </div>
-        </div>
+    <button type="button" onclick="fetchData()">Fetch data</button>
+    <div id="progate">
+ 
     </div>
-
-    <script>
-        async function ambilData() {
-            const url = await fetch("https://pokeapi.co/api/v2/pokemon/pikachu", {
-                method: "GET"
-            })
-
-            const json = await url.json();
-
-            let id = json.id;
-            let nama = json.name;
-            let tipe = json.types[0].type.name;
-            let image = json.sprites.front_default;
-            // tampilan data
-            document.getElementById("hasil").innerHTML = `
-                <div class="card" style="width: 18rem;">
-                    <h5 class="card-header">ID: ${id} - ${nama}</h5>
-                    <img src="${image}" class="card-img-top" alt="${nama}">
-                    <div class="card-body">
-                        <h5 class="card-title">Tipe: ${tipe}</h5>
-                    </div>
-                </div>
-            `;
-        }
-    </script>
-    
 </body>
+<script>
+    function fetchData() {
+    //membuat objek XMLHttpRequest untuk mengambil data ke server yang dituju
+    const xhttp = new XMLHttpRequest(); //membuat objek XMLHttpRequest
+    const url = "https://pokeapi.co/api/v2/pokemon?limit=10"; //URL yang akan dituju
+    const httpMethod = "GET"; //method yang digunakan
+    //membuat sebuah callback function
+    xhttp.onload = function() {   //membuat callback function
+        // apa yang kita lakukan ketika response telah tersedia
+        
+        const response = JSON.parse(this.responseText);  //mengubah string response menjadi object
+        //console.log(response);
+        const results = response.results;   //mengambil array results dari response
+        //console.log(results);
+        let data = '';  //membuat variabel data untuk menampung string yang akan ditampilkan di #progate
+        for (let i = 0; i < results.length; i++) { //   mengulangi setiap item dari array results
+            data = data + `<p>${results[i].name}</p>`; //   menambahkan string yang akan ditampilkan di #progate
+        }
+         document.getElementById("progate").innerHTML = data; //menampilkan data ke dalam element dengan id "progate"
+
+        
+        // console.log(this.responseText);
+    };
+    //mengirim request ke server
+        xhttp.open(httpMethod, url);
+        xhttp.send();
+};
+</script>
 </html>
